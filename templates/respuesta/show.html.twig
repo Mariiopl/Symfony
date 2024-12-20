@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Respuesta{% endblock %}
+
+{% block body %}
+    <h1>Respuesta</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ respuestum.id }}</td>
+            </tr>
+            <tr>
+                <th>Marca_temporal</th>
+                <td>{{ respuestum.marcaTemporal ? respuestum.marcaTemporal|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Respuesta_elegida</th>
+                <td>{{ respuestum.respuestaElegida }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_respuesta_index') }}">back to list</a>
+
+    <a href="{{ path('app_respuesta_edit', {'id': respuestum.id}) }}">edit</a>
+
+    {{ include('respuesta/_delete_form.html.twig') }}
+{% endblock %}

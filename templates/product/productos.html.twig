@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Listado de Productos{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        .container {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #343a40;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .table {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .table th {
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+        }
+        .table td {
+            text-align: center;
+            vertical-align: middle;
+        }
+        .btn-info {
+            background-color: #17a2b8;
+            border-color: #17a2b8;
+        }
+        .btn-info:hover {
+            background-color: #138496;
+            border-color: #117a8b;
+        }
+        .pagination {
+            margin-top: 20px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1>Listado de Productos</h1>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Precio</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for producto in productos %}
+                    <tr>
+                        <td>{{ producto.id }}</td>
+                        <td>{{ producto.nombre }}</td>
+                        <td>{{ producto.precio }} €</td>
+                        <td>
+                            <a href="{{ path('producto_id', { id: producto.id }) }}" class="btn btn-info btn-sm">Ver</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="d-flex justify-content-center">
+            {{ knp_pagination_render(productos) }}
+        </div>
+
+        {# Uncomment if you want to add a link to create more products #}
+        {# <a href="{{ path('crear_productos') }}" class="btn btn-primary mt-3">Crear más productos</a> #}
+    </div>
+{% endblock %}

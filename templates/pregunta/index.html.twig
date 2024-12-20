@@ -1,0 +1,174 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Pregunta index{% endblock %}
+
+{% block body %}
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .table thead {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .table th, .table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .table th {
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            font-size: 14px;
+        }
+
+        .table tbody tr:nth-child(even) {
+            background-color: #f7f7f7;
+        }
+
+        .table tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .table a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .table a:hover {
+            text-decoration: underline;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 15px;
+            background-color: #28a745;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        a:hover {
+            background-color: #218838;
+        }
+
+        td[colspan="10"] {
+            text-align: center;
+            color: #888;
+            font-style: italic;
+            padding: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .table {
+                font-size: 14px;
+            }
+
+            th, td {
+                padding: 8px;
+            }
+        }
+    </style>
+    <div style="display: flex; align-items: center; gap: 20px;">
+        {% if app.user %}
+            <p>Usuario logueado: {{ app.user.userIdentifier }}</p>
+        {% else %}
+            <p>Nadie está logueado.</p>
+        {% endif %}
+
+        <div>
+            {% for message in app.flashes('success') %}
+                <span class="alert alert-success">{{ message }}</span>
+            {% endfor %}
+            {% for message in app.flashes('error') %}
+                <span class="alert alert-danger">{{ message }}</span>
+            {% endfor %}
+        </div>
+
+        <a href="{{ path('app_logout') }}">Cerrar sesión</a>
+    </div>
+
+    <h1>Listado de preguntas</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                {% if is_granted('ROLE_ADMIN') %}
+                <th>Id</th>
+                {% endif %}
+                <th>Enunciado</th>
+                <th>Opcion a</th>
+                <th>Opcion b</th>
+                <th>Opcion c</th>
+                <th>Opcion d</th>
+                {% if is_granted('ROLE_ADMIN') %}
+                <th>Opcion correcta</th>
+                <th>Fecha inicio</th>
+                <th>Fecha fin</th>
+                <th>actions</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+        {% for preguntum in preguntas %}
+            <tr>
+                {% if is_granted('ROLE_ADMIN') %} 
+                <td>{{ preguntum.id }}</td>
+                {% endif %}
+                <td>{{ preguntum.enunciado }}</td>
+                <td>{{ preguntum.opcionA }}</td>
+                <td>{{ preguntum.opcionB }}</td>
+                <td>{{ preguntum.opcionC }}</td>
+                <td>{{ preguntum.opcionD }}</td>
+                {% if is_granted('ROLE_ADMIN') %}                
+                <td>{{ preguntum.opcionCorrecta }}</td>
+                <td>{{ preguntum.fInicio ? preguntum.fInicio|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ preguntum.fFin ? preguntum.fFin|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_pregunta_show', {'id': preguntum.id}) }}">show</a>
+                    <a href="{{ path('app_pregunta_edit', {'id': preguntum.id}) }}">edit</a>
+                    {{ include('pregunta/_delete_form.html.twig') }}
+                </td>
+                {% endif %}
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="10">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% if is_granted('ROLE_ADMIN') %}
+    <a href="{{ path('app_pregunta_new') }}">Create new</a>
+{% else %}
+
+{% endif %}
+    
+{% endblock %}

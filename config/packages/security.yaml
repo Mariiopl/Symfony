@@ -43,6 +43,8 @@ security:
     access_control:
          - { path: ^/admin, roles: ROLE_ADMIN }
          - { path: ^/profile, roles: ROLE_USER }
+         # Acceso a /pregunta/new solo para roles ROLE_ADMIN y ROLE_MODERATOR
+         - { path: ^/pregunta, roles: ['ROLE_ADMIN', 'ROLE_USER'] }
 
 when@test:
     security:

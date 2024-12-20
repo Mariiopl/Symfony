@@ -2,7 +2,7 @@
 
 namespace App\Command;
 
-use App\Entity\User; // Cambia esto al nombre de tu entidad de usuario
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -13,7 +13,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class CreateUserCommand extends Command
 {
-    protected static $defaultName = 'app:create-user';
+    protected static $defaultName = 'app:nuevo-usuario';
 
     private $entityManager;
     private $passwordHasher;
